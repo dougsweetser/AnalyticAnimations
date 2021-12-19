@@ -3,7 +3,7 @@
 
 # # Q8 Designed for nparray
 
-# In[1]:
+# In[ ]:
 
 
 import math
@@ -17,7 +17,7 @@ from copy import deepcopy
 
 # Define the stretch factor $\gamma$ and the $\gamma \beta$ used in special relativity.
 
-# In[2]:
+# In[ ]:
 
 
 def sr_gamma(beta_x=0, beta_y=0, beta_z=0):
@@ -33,7 +33,7 @@ def sr_gamma_betas(beta_x=0, beta_y=0, beta_z=0):
     return [g, g * beta_x, g * beta_y, g * beta_z]
 
 
-# In[3]:
+# In[ ]:
 
 
 class Q8(np.ndarray):
@@ -1050,7 +1050,7 @@ class Q8(np.ndarray):
     trinary_op["triple_product"] = triple_product
 
 
-# In[4]:
+# In[ ]:
 
 
 class TestQ8(unittest.TestCase):
@@ -1543,7 +1543,7 @@ unittest.TextTestRunner().run(suite);
 # 
 # This is an ordered array of quaternions with n=rows * m=column = d dimensions. The need for these arose from the study of quantum mechanics, but they may be used in classical mechanics too as a collection of states.
 
-# In[5]:
+# In[ ]:
 
 
 # class Q8States(Q8)
@@ -2239,7 +2239,7 @@ class Q8States(object):
         return np.array(self.qs)
 
 
-# In[6]:
+# In[ ]:
 
 
 class TestQ8States(unittest.TestCase):
@@ -2610,7 +2610,7 @@ suite = unittest.TestLoader().loadTestsFromModule(TestQ8States())
 unittest.TextTestRunner().run(suite);
 
 
-# In[7]:
+# In[ ]:
 
 
 q1 = Q8([1,2,3, 4])
@@ -2620,7 +2620,7 @@ for q in q1.ops(q2, dim=4):
     print(q)
 
 
-# In[8]:
+# In[ ]:
 
 
 get_ipython().system('jupyter nbconvert --to python Q8.ipynb')

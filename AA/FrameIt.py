@@ -38,7 +38,7 @@ from Q8 import Q8, Q8States;
 # To do:
 # Print out tx, ty, dz values.
 
-# In[2]:
+# In[27]:
 
 
 class FrameIt(object):
@@ -82,17 +82,46 @@ class FrameIt(object):
     def __get_time_frames(self):
         """A linear space for time frames, can be based on values passes or when instance created."""
         
+        print(f"start, end, frames: {self.opt.start}, {self.opt.end}, {self.opt.frames}")
+        
         t_frames = np.linspace(self.opt.start, self.opt.end, self.opt.frames)
         
         # Get all the intervals, needed to know which ones are empty, if any.
         df_t_frames = pd.DataFrame(t_frames)
+        print("step 1")
         df_t_frames_cut = pd.cut(df_t_frames[0], t_frames, include_lowest=True)
+        print("step 2")
         df_t_frames_cut_array = df_t_frames_cut.tolist()
+        print("step 3")
         df_t_frames_cut_array.pop(0)
+        print("step 4")
         
         for df_t_frame in df_t_frames_cut_array:
+            print("step 5")
             self.intervals[df_t_frame] = ''
+            
+        return t_frames
+    
+    def get_time_frames(self):
+        """A linear space for time frames, can be based on values passes or when instance created."""
+        print(f"start, end, frames: {self.opt.start}, {self.opt.end}, {self.opt.frames}")
         
+        t_frames = np.linspace(self.opt.start, self.opt.end, self.opt.frames)
+        
+        # Get all the intervals, needed to know which ones are empty, if any.
+        df_t_frames = pd.DataFrame(t_frames)
+        print(f"step 1: df_t_frames: \n{df_t_frames}")
+        df_t_frames_cut = pd.cut(df_t_frames[0], t_frames, include_lowest=True)
+        print(f"step 2")
+        df_t_frames_cut_array = df_t_frames_cut.tolist()
+        print(f"step 3")
+        df_t_frames_cut_array.pop(0)
+        print(f"step 4")
+        
+        for df_t_frame in df_t_frames_cut_array:
+            print("step 5")
+            self.intervals[df_t_frame] = ''
+            
         return t_frames
     
     def bin_events_by_time(self, df_txyz, quiet=False):
@@ -153,7 +182,7 @@ class FrameIt(object):
         
 
 
-# In[3]:
+# In[28]:
 
 
 class TestFrameIt(unittest.TestCase):
@@ -196,10 +225,60 @@ suite = unittest.TestLoader().loadTestsFromModule(TestFrameIt())
 unittest.TextTestRunner().run(suite);
 
 
-# In[4]:
+# In[29]:
 
 
 get_ipython().system('jupyter nbconvert --to python FrameIt.ipynb')
+
+
+# In[ ]:
+
+
+https://app.plex.tv/desktop/#!/server/6296d1dfac0fcbd0609182f2443b906e69a3292e/details?key=%2Flibrary%2Fmetadata%2F142715&context=
+
+
+# In[30]:
+
+
+q1 = Q8([1, 1, 3, 4])
+q2 = Q8([2, 2, -3, -4])
+q3 = Q8([3, 3, 3, 4])
+q4 = Q8([4, 4, 3, 2])
+tri_state = Q8States([q1, q2, q3])
+five_state = Q8States([q1, q2, q3, q4, q3.conj()])
+
+FIt = FrameIt(tri_state)
+print(f"start: {FIt.opt.start}")
+print(f"end: {FIt.opt.end}")
+print(f"frames: {FIt.opt.frames}")
+
+tthing = FIt.get_time_frames()
+print(f"tthing:\n{tthing}")
+
+df = FIt.split_events()
+print(f"FIt split_events: \n{df}")
+
+fi = FrameIt(tri_state, frames=3)
+df_split = fi.split_events(quiet=True)
+df_bin = fi.bin_events_by_time(df_split)
+print(f"df_split with frames=3: \n{df_split}")
+print(f"df_bin: \n{df}")
+print(f"df shape: \n{df_bin.shape}")
+
+fi = FrameIt(five_state, frames=10)
+df_split = fi.split_events(quiet=True)
+df_bin = fi.bin_events_by_time(df_split, quiet=True)
+df_space_bins = fi.space_bins(df_bin)
+
+print(f"df_split: \n{df_split}")
+print(f"df_bin: \n{df_bin}")
+print(f"df_spacee_bins: \n{df_space_bins}")
+
+
+# In[ ]:
+
+
+FIt.__get_time_frames()
 
 
 # In[ ]:
